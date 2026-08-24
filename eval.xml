@@ -1,0 +1,12 @@
+<evaluation>
+  <qa_pair><question>Verify certificate FRXS-5330F9E368BA4536. What is the verdict?</question><answer>verified</answer></qa_pair>
+  <qa_pair><question>What reviewer_role appears in the signed record of FRXS-5330F9E368BA4536?</question><answer>founder_reviewer</answer></qa_pair>
+  <qa_pair><question>What signature algorithm does the envelope of FRXS-5330F9E368BA4536 record?</question><answer>ed25519</answer></qa_pair>
+  <qa_pair><question>What is the status field in the signed record of FRXS-5330F9E368BA4536?</question><answer>VALID</answer></qa_pair>
+  <qa_pair><question>What are the first eight hex characters of the signing key fingerprint for FRXS-5330F9E368BA4536?</question><answer>d7c581cc</answer></qa_pair>
+  <qa_pair><question>What is the kind field of certificate FRXS-5330F9E368BA4536?</question><answer>intelligence_report</answer></qa_pair>
+  <qa_pair><question>Verify certificate FRXS-0000000000000000. What is the verdict?</question><answer>not_found</answer></qa_pair>
+  <qa_pair><question>What review decision does the human review record of FRXS-5330F9E368BA4536 carry?</question><answer>approved</answer></qa_pair>
+  <qa_pair><question>How many top-level keys does the signed canonical record of FRXS-5330F9E368BA4536 contain?</question><answer>16</answer></qa_pair>
+  <qa_pair><question>How many issued certificate identifier shapes does the verify tool accept?</question><answer>2</answer></qa_pair>
+</evaluation>
