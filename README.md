@@ -45,3 +45,13 @@ gcloud run deploy fosterrx-verify-mcp --source . \
 
 Public, unauthenticated, by design: it can only read what the world can
 already read.
+
+## Verify with your own AI
+
+This server is public. Anyone can register it and verify any published
+Foster Rx certificate — no account, no permission:
+
+1. In Claude (or any MCP client): add a custom connector with URL
+   `https://fosterrx-verify-mcp-630726936307.us-east4.run.app/mcp`
+2. Ask: `verify FRXS-5330F9E368BA4536`
+3. The reader gets the cryptographic verdict — not the issuer's word.
