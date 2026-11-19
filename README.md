@@ -1,33 +1,33 @@
 # fosterrx-verify-mcp-server
 
-A read-only MCP server that verifies Foster Rx certificates using **public
-material only**: the world-readable certificate envelope and the Ed25519 trust
-anchor published at `https://fosterrx.com/.well-known/angis-signing-key-v1.pub`.
+A read-only MCP server for checking Foster Rx signed records. It uses **public
+material only**: the world-readable record envelope and the Ed25519 public key
+published at `https://fosterrx.com/.well-known/angis-signing-key-v1.pub`.
 
-**No credential exists anywhere in this codebase.** That is not a deployment
-choice but the product's argument in server form: verification that required
-Foster Rx's permission would not be verification. This repository being public
-and auditable is part of the same argument.
+**No credential exists anywhere in this codebase.** Checking a record does not
+need Foster Rx's permission, so the server holds nothing that would grant it.
+The code is public so that anyone can read what it does.
+
+Records are identified by a certificate id such as `FRXS-5330F9E368BA4536`.
 
 ## Tools
 
 | Tool | What it does |
 |---|---|
-| `fosterrx_verify_certificate` | Real Ed25519 verification of the signed canonical bytes against the live trust anchor. Verdicts: `verified` / `signature_invalid` / `not_found` / `tool_fault`. |
-| `fosterrx_get_certificate_record` | The full signed canonical, decoded verbatim. No verification performed; nothing renamed or improved on. |
-| `fosterrx_get_trust_anchor` | The published public key, plus instructions for verifying with no Foster Rx software at all. |
+| `fosterrx_verify_certificate` | Checks the Ed25519 signature over the signed canonical bytes against the live public key. Verdicts: `verified` / `signature_invalid` / `not_found` / `tool_fault`. |
+| `fosterrx_get_certificate_record` | Returns the full signed canonical record, decoded verbatim. It does not check the signature, and it renames nothing. |
+| `fosterrx_get_trust_anchor` | Returns the published public key, with instructions for checking a record using no Foster Rx software at all. |
 
 ## Verdict discipline
 
-- **`not_found` is not invalid.** An unpublished certificate is a fact about
-  the public register, never a claim about any artifact.
+- **`not_found` is not invalid.** It means no record is published under that
+  id. It is a fact about the public register and says nothing about any file.
 - **`tool_fault` is not invalid.** A network failure or malformed input is a
-  fact about this tool's run and says nothing about the certificate.
-- **`signature_invalid`** is asserted only after Ed25519 arithmetic failed
+  fact about this tool's run and says nothing about the record.
+- **`signature_invalid`** is returned only after the Ed25519 check has failed
   over the signed bytes under the published key.
-- Both issued identifier shapes are accepted (`FRXS-<16 hex>` and
-  `FRXS-<uuid>`); a pattern inferred from only one of them has previously
-  rejected every real certificate.
+- Both issued identifier shapes are accepted: `FRXS-<16 hex>` and
+  `FRXS-<uuid>`.
 
 ## Run
 
@@ -36,22 +36,21 @@ npm ci && npm run build
 PORT=8080 node dist/index.js     # MCP endpoint at POST /mcp, health at /healthz
 ```
 
-## Deploy (Cloud Run)
+The server is public and unauthenticated by design. It can only read what
+anyone can already read.
 
-```bash
-gcloud run deploy fosterrx-verify-mcp --source . \
-  --region us-east4 --project fosterrx-prod --allow-unauthenticated
-```
+## Check a record with your own AI
 
-Public, unauthenticated, by design: it can only read what the world can
-already read.
+Anyone can add this server to an AI assistant and check any published Foster
+Rx record. No account or permission is needed.
 
-## Verify with your own AI
-
-This server is public. Anyone can register it and verify any published
-Foster Rx certificate — no account, no permission:
-
-1. In Claude (or any MCP client): add a custom connector with URL
+1. In Claude (or any MCP client), add a custom connector with the URL
    `https://fosterrx-verify-mcp-630726936307.us-east4.run.app/mcp`
-2. Ask: `verify FRXS-5330F9E368BA4536`
-3. The reader gets the cryptographic verdict — not the issuer's word.
+2. Ask: `check record FRXS-5330F9E368BA4536`
+3. The assistant returns the result of the signature check, which rests on the
+   public key and not on the issuer's word.
+
+## Contact
+
+- General: info@fosterrx.com
+- Security reports: security@fosterrx.com
