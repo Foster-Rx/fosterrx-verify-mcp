@@ -1,7 +1,7 @@
 {
   "name": "fosterrx-verify-mcp-server",
   "version": "1.0.0",
-  "description": "Read-only MCP server for verifying Foster Rx certificates against public material only",
+  "description": "Read-only connector for checking Foster Rx signed records against the public key.",
   "type": "module",
   "main": "dist/index.js",
   "scripts": {
